@@ -18,12 +18,17 @@ def handler(data):
     global times
     times.append(datetime.now().microsecond)
     on = not on
-    print(str(on))
 
 GPIO.add_event_callback(INPUT, handler)
 try: 
     while True:
         a = 1+1
 except KeyboardInterrupt:
-    print(times)
+    print("Signals:")
+    #print(times)
+    for i, t in enumerate(times):
+        if t != times[0]:
+            elapse = times[i] - times[i-1]
+            state = "off:" if i % 2 == 0 else "on:"
+            print(state, elapse,"μs")
     GPIO.cleanup()
