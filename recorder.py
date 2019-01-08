@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 from datetime import datetime
+from datetime import timedelta
 
 # Pin for reading IR signal
 INPUT = 11
@@ -14,10 +15,11 @@ GPIO.setup(INPUT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(INPUT, GPIO.BOTH)
 
 def handler(data):
-    global on
     global times
-    times.append(datetime.now().microsecond)
+    global on
+    time = datetime.now()
     on = not on
+    times.append(time)
 
 GPIO.add_event_callback(INPUT, handler)
 try: 
