@@ -36,10 +36,6 @@ Notice the `-x64`. ([credit](https://github.com/rust-lang/rust/issues/37420))
 ## Running the project
 See `run.sh`. Modify it to suit your needs of compiling the code locally, movivg it to the PI, and running it. 
 
-#### Setup cross compile for Raspberry-pi
-git@github.com:fgafford/Ultimate-RePImote.git
-
-
 
 ### Helpful resources:
 https://www.instructables.com/id/How-To-Useemulate-remotes-with-Arduino-and-Raspber/  

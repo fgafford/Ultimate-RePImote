@@ -24,11 +24,16 @@ while getopts ":acxr" opt; do
       RUN=1
       ;;
     \? ) 
-      echo /
-      "Usage: cmd [-cxr] /
-      -c : compile /
-      -x : copy /
-      -r : run"
+cat << EOF
+Synopsis: 
+  cmd [-cxra] file.rs
+
+Describe:
+  -a : Do it all (compile, copy, and run)
+  -c : compile 
+  -x : copy 
+  -r : run
+EOF
       ;;
   esac
 done
