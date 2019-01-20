@@ -50,5 +50,5 @@ fi
 
 # Run on remote
 if [ "$RUN" == "1" ]; then
-  ssh pi-zero $cmd
+  ssh -t pi-zero $cmd
 fi
