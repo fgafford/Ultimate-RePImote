@@ -7,7 +7,7 @@ remotePath='~'
 cmd="$remotePath/$executable;"
 
 
-while getopts ":acxr" opt; do
+while getopts ":acvr" opt; do
   case ${opt} in
     a ) # Do it all
       COMPILE=1
@@ -17,7 +17,7 @@ while getopts ":acxr" opt; do
     c ) # process option c
       COMPILE=1
       ;;
-    x ) # process for x (copy)
+    v ) # process for x (copy)
       COPY=1
       ;;
     r ) # process option r
