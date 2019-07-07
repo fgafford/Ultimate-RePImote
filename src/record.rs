@@ -1,18 +1,48 @@
-extern crate rppal;
-extern crate rand;
+use std::error::Error;
+// use std::thread;
 
-use std::thread;
-use std::time::Duration;
+use rppal::gpio::{Gpio};
+use rppal::gpio::Level::{High, Low};
+use rppal::system::DeviceInfo;
+use rppal::gpio::Level;
 
-use rppal::gpio::{Gpio, Mode, Level};
+// The GPIO module uses BCM pin numbering. BCM GPIO 18 is tied to physical pin 12.
+const GPIO_IR_IN: u8 = 17; // Physical pin 11
 
-const PIN: u8 = 17 // Phisical pin 11
 
-fn main() {
-    let gpio = Gpio::new()?.get(PIN).
+pub fn run() -> Result<(), Box<dyn Error>> {
+    println!("Reading IR in on a {}.", DeviceInfo::new()?.model());
+
+    let mut pin = Gpio::new()
+                ?.get(GPIO_IR_IN)
+                ?.into_input();
 
     while true {
-      let v = gpio.read() as u8;
-      println!(v)
+        let lvl = pin.read() as u8;
+        println!("{}", lvl);
     }
+    
+    // println!("Before Blocking");
+
+    // pin.poll_interrupt(false, None);
+
+    // println!("After Blocking");
+
+    // fn input_handler(level: Level){
+    //     println!("{}", level);
+    // }
+
+    // Blink the LED by setting the pin's logic level high for 500ms.
+    loop { 
+       || { 
+            let level = pin.read();
+            let out = match level {
+                High => "High",
+                Low => "Low",
+            };
+            println!("{}", out);
+        };
+    }
+
+    Ok(())
 }
