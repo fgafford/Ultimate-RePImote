@@ -1,5 +1,6 @@
 use std::error::Error;
-// use std::thread;
+use std::time::Instant;
+// use std::thread'
 
 use rppal::gpio::{Gpio};
 use rppal::gpio::Level;
@@ -7,13 +8,17 @@ use rppal::gpio::Level::{Low};
 use rppal::system::DeviceInfo;
 
 // The GPIO module uses BCM pin numbering. BCM GPIO 18 is tied to physical pin 12.
-const GPIO_IR_IN: u8 = 17; // Physical pin 11
-const GPIO_LED: u8 = 23; // Physical pin 16
+// const GPIO_IR_IN: u8 = 17; // Physical pin 11
+// const GPIO_LED: u8 = 23; // Physical pin 16
+const GPIO_IR_IN: u8 = 18; // Physical pin 12
+const GPIO_LED: u8 = 24; // Physical pin 18
 
 pub fn run() -> Result<(), Box<dyn Error>> {
     println!("Reading IR in on a {}.", DeviceInfo::new()?.model());
 
-    let mut pin = Gpio::new()
+    let mut toggels: Vec<Instant> = vec![];
+
+    let pin = Gpio::new()
                 ?.get(GPIO_IR_IN)
                 ?.into_input();
 
@@ -31,6 +36,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
       //  0 is for recieving 
       let lvl = pin.read();
       if lvl != prev_read {
+        toggels.push(Instant::now());
         // toggle : set opposite of IR sensor
         // toggle_led(lvl == Low)
         if lvl == Low {
@@ -38,45 +44,12 @@ pub fn run() -> Result<(), Box<dyn Error>> {
         } else {
           led.set_low();
         }
+      println!("Times: {:?}", toggels);
       }
-      prev_read = lvl
+      prev_read = lvl;
+
     }
 
-    // fn is_low(lvl: Level) -> bool {
-    //   if(lvl == "Low")
-    //     return true;
-    //   if(lvl == "High")
-    //     return false;
-    // }
-
-    // fn toggle_led(on: bool) {
-    //     let mut togg = || {
-    //     };
-    //     togg();
-    //   } 
-    // }
-    
-    // println!("Before Blocking");
-
-    // pin.poll_interrupt(false, None);
-
-    // println!("After Blocking");
-
-    // fn input_handler(level: Level){
-    //     println!("{}", level);
-    // }
-
-    // Blink the LED by setting the pin's logic level high for 500ms.
-    // loop { 
-    //    || { 
-    //         let level = pin.read();
-    //         let out = match level {
-    //             High => "High",
-    //             Low => "Low",
-    //         };
-    //         println!("{}", out);
-    //     };
-    // }
 
     Ok(())
 }
