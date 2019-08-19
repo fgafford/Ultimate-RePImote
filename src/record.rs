@@ -22,6 +22,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
                 ?.get(GPIO_IR_IN)
                 ?.into_input();
 
+    // Starts: High
     let mut prev_read : Level = pin.read();
 
     let mut led = Gpio::new()
