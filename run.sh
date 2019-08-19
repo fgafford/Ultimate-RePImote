@@ -1,10 +1,11 @@
 #!/bin/bash
 # set -x
 
-executable='Ultimate-RePImote'
+setup="" # "RUST_BACKTRACE=1"
 remotePath='~'
+executable='Ultimate-RePImote'
 # Commands to run on remote 
-cmd="$remotePath/$executable;"
+cmd="$setup $remotePath/$executable;"
 
 
 while getopts ":acvr" opt; do
