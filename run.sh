@@ -8,7 +8,7 @@ executable='Ultimate-RePImote'
 cmd="$setup $remotePath/$executable;"
 
 
-while getopts ":acvr" opt; do
+while getopts ":acvrs" opt; do
   case ${opt} in
     a ) # Do it all
       COMPILE=1
@@ -24,16 +24,20 @@ while getopts ":acvr" opt; do
     r ) # process option r
       RUN=1
       ;;
+    s ) # Setup database
+      SETUP=1
+      ;;
     \? ) 
 cat << EOF
 Synopsis: 
   cmd [-cxra] file.rs
 
 Describe:
-  -a : Do it all (compile, copy, and run)
+  -a : Do full program run (compile, copy, and run)
   -c : compile 
   -x : copy 
   -r : run
+  -s : setup (setup database on server)
 EOF
       ;;
   esac
@@ -52,4 +56,16 @@ fi
 # Run on remote
 if [ "$RUN" == "1" ]; then
   ssh -t pi-zero $cmd
+fi
+
+# Setup DB on server
+if [ "$SETUP" == "1" ]; then
+  scp ./setup.sql pi-zero:~
+  
+  # Run Script
+  setup_cmd="sqlite3 UltimateRePImote.db < ~/setup.sql"
+  ssh -t pi-zero $setup_cmd
+
+  # Remove Script
+  # ssh -t pi-zero "rm ~/.setup.sql"
 fi
